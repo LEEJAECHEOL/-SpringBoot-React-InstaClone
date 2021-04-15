@@ -1,28 +1,40 @@
-# nomad Clone Project
+# insta Clone Project
 
 ### 1. 의존성
-- Spring Boot DevTools
-- Lombok
-- Spring Data JPA
-- MySQL Driver
-- Spring Security
 - Spring Web
-- com.auth0 (3.10.3)
+- Lombok
+- Spring Dev Tool
+- OAuth`
+- JPA
+- Security
+- MySQL Driver
+- qlrm
+- validation
+- jwt
 
 ```xml
 <dependency>
-    <groupId>com.auth0</groupId>
-    <artifactId>java-jwt</artifactId>
-    <version>3.10.3</version>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+<dependency>
+	<groupId>com.auth0</groupId>
+	<artifactId>java-jwt</artifactId>
+	<version>3.10.3</version>
+</dependency>
+<dependency>
+	<groupId>org.qlrm</groupId>
+	<artifactId>qlrm</artifactId>
+	<version>2.1.1</version>
 </dependency>
 ```
 
 ### 2. DB 생성
 ```spl
-create user 'nomad'@'%' identified by '1234';
-GRANT ALL PRIVILEGES ON *.* TO 'nomad'@'%';
-create database nomad;
-use nomad;
+create user 'insta'@'%' identified by '1234';
+GRANT ALL PRIVILEGES ON *.* TO 'insta'@'%';
+create database insta;
+use insta;
 ```
 
 ### 3. application.yml 세팅
@@ -39,7 +51,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/nomad?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/insta?serverTimezone=Asia/Seoul
     username: nomad
     password: 1234
 
