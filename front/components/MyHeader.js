@@ -11,7 +11,7 @@ const MyHeader = () => {
         <Row>
           <Col xs={24} md={4} xl={6}></Col>
           <Col xs={24} md={16} xl={12}>
-            <Menu mode="horizontal" defaultSelectedKeys={["2"]}>
+            <Menu mode="horizontal">
               <Menu.Item key={1}>
                 <Link href="/">
                   <a>
@@ -27,7 +27,7 @@ const MyHeader = () => {
                 </Link>
               </Menu.Item>
               <Menu.Item key={3}>
-                <Link href="/">
+                <Link href="/explore">
                   <a>
                     <CompassOutlined />
                   </a>
