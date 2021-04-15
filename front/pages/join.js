@@ -11,7 +11,6 @@ import {
   SocialLogin,
 } from "./style";
 
-// Insta는 처음 페이지가 로그인임.
 const Join = () => {
   const onFinish = () => {};
   return (
@@ -66,7 +65,7 @@ const Join = () => {
         </LoginCard>
         <JoinCard>
           계정이 있으신가요?
-          <Link href="/">
+          <Link href="/login">
             <a>로그인</a>
           </Link>
         </JoinCard>
