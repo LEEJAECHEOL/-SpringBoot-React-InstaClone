@@ -1,8 +1,10 @@
-const { createAsyncThunk } = require("@reduxjs/toolkit");
+import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-exports.logIn = createAsyncThunk("user/logIn", async (data, thunkAPI) => {
-  return await delay(500, {
-    userId: 1,
-    nickname: "zerocho",
-  });
+axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.headers.post["Content-Type"] = "application/json; charset=utf-8";
+
+export const join = createAsyncThunk("user/join", async (data, thunkAPI) => {
+  const response = await axios.post("/auth/join", JSON.stringify(data));
+  return response.data;
 });

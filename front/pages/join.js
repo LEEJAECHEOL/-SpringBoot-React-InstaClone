@@ -1,11 +1,18 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
-import { GoogleOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { JoinCard, LoginCard, LoginForm, LoginLayout } from "../style";
+import { useDispatch, useSelector } from "react-redux";
+import { join } from "../actions/user";
 
 const Join = () => {
-  const onFinish = () => {};
+  const dispatch = useDispatch();
+  const { joinLoading } = useSelector((state) => state.user);
+
+  // 작성 시 submit
+  const onFinish = (values) => {
+    dispatch(join(values));
+  };
   return (
     <>
       <LoginLayout>
@@ -16,12 +23,10 @@ const Join = () => {
           </h3>
           <LoginForm onFinish={onFinish}>
             <Form.Item
-              name="username"
-              rules={[
-                { required: true, message: "Please input your username!" },
-              ]}
+              name="email"
+              rules={[{ required: true, message: "Please input your email!" }]}
             >
-              <Input placeholder="휴대폰 번호 또는 이메일 주소" />
+              <Input placeholder="이메일 주소" />
             </Form.Item>
 
             <Form.Item
@@ -32,9 +37,9 @@ const Join = () => {
             </Form.Item>
 
             <Form.Item
-              name="nickName"
+              name="username"
               rules={[
-                { required: true, message: "Please input your nickName!" },
+                { required: true, message: "Please input your username!" },
               ]}
             >
               <Input placeholder="사용자 이름" />
@@ -50,7 +55,7 @@ const Join = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={joinLoading}>
                 가입
               </Button>
             </Form.Item>

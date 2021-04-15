@@ -1,8 +1,11 @@
-const { createSlice } = require("@reduxjs/toolkit");
-const { logIn } = require("../actions/user");
+import { createSlice } from "@reduxjs/toolkit";
+import { join } from "../actions/user";
+import Router from "next/router";
 
-const initialState = {};
-
+const initialState = {
+  joinLoading: false,
+  joinError: null,
+};
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -13,16 +16,19 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) =>
     builder
-      .addCase(logIn.pending, (state, action) => {
-        // state.data = null;
-        // state.isLoggingIn = true;
+      // join request
+      .addCase(join.pending, (state) => {
+        state.joinLoading = true;
       })
-      .addCase(logIn.fulfilled, (state, action) => {
-        // state.data = action.payload;
-        // state.isLoggingIn = false;
+      // join success
+      .addCase(join.fulfilled, (state, action) => {
+        state.joinLoading = false;
+        Router.push("/login");
       })
-      .addCase(logIn.rejected, (state, action) => {
-        // state.error = action.payload;
+      // join fail
+      .addCase(join.rejected, (state, action) => {
+        state.joinLoading = false;
+        state.joinError = action.payload;
       }),
 });
 
