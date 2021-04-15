@@ -1,5 +1,6 @@
 import { SettingOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
+import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ProfileCard } from "./style";
@@ -88,7 +89,11 @@ const ProfileInfo = () => {
         visible={isSettingModalVisible}
         onCancel={handleSettingCancel}
       >
-        <Button type="text">회원정보 변경</Button>
+        <Button type="text">
+          <Link href="/profile/edit">
+            <a>회원정보 변경</a>
+          </Link>
+        </Button>
         <Button type="text">로그아웃</Button>
         <Button type="text" onClick={handleSettingCancel}>
           취소

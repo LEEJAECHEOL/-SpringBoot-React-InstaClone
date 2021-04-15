@@ -87,3 +87,35 @@ export const ExploreCol = styled(Col)`
     width: 100%;
   }
 `;
+
+// profile edit
+export const ProfileForm = styled(Form)`
+  .profile-image-wrap .ant-form-item-control-input {
+    margin-top: 4px;
+    span {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+  .ant-form-item-label .profile-image {
+    position: relative;
+    width: 40px;
+    margin-top: 10px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .ant-form-item-label > label::after {
+    content: "";
+  }
+  .ant-form-item-label
+    > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+    content: "";
+  }
+  .ant-form-item {
+    margin-bottom: 12px;
+  }
+  .explain span {
+    color: rgba(0, 0, 0, 0.3);
+  }
+`;
