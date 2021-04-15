@@ -1,15 +1,8 @@
 import React from "react";
 import Head from "next/head";
 import AppLayout from "../components/AppLayout";
-import { Col, Row } from "antd";
-import styled from "styled-components";
-
-const ExploreCol = styled(Col)`
-  position: relative;
-  img {
-    width: 100%;
-  }
-`;
+import { Row } from "antd";
+import { ExploreCol } from "../style";
 
 const explore = () => {
   return (

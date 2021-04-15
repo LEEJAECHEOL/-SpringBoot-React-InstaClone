@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nvar _toolkit = require(\"@reduxjs/toolkit\");\n\nvar userSlice = require(\"./userSlice\");\n\nmodule.exports = (0, _toolkit.combineReducers)({\n  user: userSlice.reducer\n});","map":null,"metadata":{},"sourceType":"script"}

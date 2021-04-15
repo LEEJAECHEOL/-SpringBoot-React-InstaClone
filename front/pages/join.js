@@ -2,14 +2,7 @@ import React from "react";
 import { Button, Form, Input } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import {
-  DivOr,
-  JoinCard,
-  LoginCard,
-  LoginForm,
-  LoginLayout,
-  SocialLogin,
-} from "./style";
+import { JoinCard, LoginCard, LoginForm, LoginLayout } from "../style";
 
 const Join = () => {
   const onFinish = () => {};

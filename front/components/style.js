@@ -178,3 +178,76 @@ export const FeedCard = styled(Card)`
     }
   }
 `;
+
+// profile info
+export const ProfileCard = styled(Card)`
+  background-color: #fafafa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  margin-bottom: 20px;
+  .ant-card-body {
+    padding: 0;
+    display: flex;
+    .profile-image {
+      flex: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      div {
+        width: 80%;
+        height: 80%;
+        text-align: center;
+        border-radius: 50%;
+        position: relative;
+        img {
+          width: 100%;
+          height: 100%;
+          min-width: 100px;
+          max-width: 200px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+    }
+    .profile-info {
+      flex: 7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > div {
+        display: inline-block;
+        .profile-info-username-group {
+          display: flex;
+          align-items: center;
+          margin-bottom: 20px;
+          > span {
+            font-size: 24px;
+            margin-right: 20px;
+          }
+          button {
+            margin-right: 10px;
+          }
+          svg {
+            cursor: pointer;
+          }
+        }
+        .profile-info-follow-group {
+          font-size: 16px;
+          margin-bottom: 20px;
+          span {
+            margin-right: 20px;
+          }
+          .profile-info-follow {
+            cursor: pointer;
+            :hover {
+              opacity: 0.7;
+            }
+          }
+        }
+        .profile-info-name-group {
+          font-size: 20px;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+`;

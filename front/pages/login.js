@@ -9,7 +9,7 @@ import {
   LoginForm,
   LoginLayout,
   SocialLogin,
-} from "./style";
+} from "../style";
 
 const Login = () => {
   const onFinish = () => {};

@@ -1,12 +1,5 @@
-import {
-  CompassOutlined,
-  HomeOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Col, Menu, Row } from "antd";
-import { Content, Header } from "antd/lib/layout/layout";
-import Link from "next/link";
+import { Col, Row } from "antd";
+import { Content } from "antd/lib/layout/layout";
 import React from "react";
 import MyHeader from "./MyHeader";
 import { Global } from "./style";

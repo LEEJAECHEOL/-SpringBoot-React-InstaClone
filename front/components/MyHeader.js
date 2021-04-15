@@ -34,7 +34,7 @@ const MyHeader = () => {
                 </Link>
               </Menu.Item>
               <Menu.Item key={4}>
-                <Link href="/">
+                <Link href="/profile">
                   <a>
                     <UserOutlined />
                   </a>
