@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import { JoinCard, LoginCard, LoginForm, LoginLayout } from "../style";
@@ -7,12 +7,12 @@ import { join } from "../actions/user";
 
 const Join = () => {
   const dispatch = useDispatch();
-  const { joinLoading } = useSelector((state) => state.user);
+  const isLoading = useSelector((state) => state.user.isLoading);
 
   // 작성 시 submit
-  const onFinish = (values) => {
+  const onFinish = useCallback((values) => {
     dispatch(join(values));
-  };
+  }, []);
   return (
     <>
       <LoginLayout>
@@ -55,7 +55,7 @@ const Join = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" loading={joinLoading}>
+              <Button type="primary" htmlType="submit" loading={isLoading}>
                 가입
               </Button>
             </Form.Item>

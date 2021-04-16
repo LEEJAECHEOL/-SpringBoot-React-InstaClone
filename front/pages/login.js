@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { Button, Form, Input } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -10,9 +10,22 @@ import {
   LoginLayout,
   SocialLogin,
 } from "../style";
+import { login } from "../actions/user";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
-  const onFinish = () => {};
+  const dispatch = useDispatch();
+  const { isLoading, loginError } = useSelector((state) => state.user);
+  const onFinish = useCallback((values) => {
+    dispatch(login(values));
+  }, []);
+
+  useEffect(() => {
+    if (loginError) {
+      alert("사용자 이름 또는 비밀번호를 확인해주세요!");
+    }
+  }, [loginError]);
+
   return (
     <>
       <LoginLayout>
@@ -22,23 +35,21 @@ const Login = () => {
             <Form.Item
               name="username"
               rules={[
-                { required: true, message: "Please input your username!" },
+                { required: true, message: "사용자 이름을 입력해주세요!" },
               ]}
             >
-              <Input placeholder="전화번호, 사용자 이름 또는 이메일" />
+              <Input placeholder="사용자 이름" />
             </Form.Item>
 
             <Form.Item
               name="password"
-              rules={[
-                { required: true, message: "Please input your password!" },
-              ]}
+              rules={[{ required: true, message: "비밀번호를 입력해주세요!" }]}
             >
               <Input.Password placeholder="비밀번호" autoComplete="on" />
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={isLoading}>
                 로그인
               </Button>
             </Form.Item>

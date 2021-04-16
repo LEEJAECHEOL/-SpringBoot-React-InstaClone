@@ -83,7 +83,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		// Hash암호 방식
 		String jwtToken = JWT.create()
-				.withSubject("cosToken")
+				.withSubject("instaToken")
 				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 만료 시간
 				.withClaim("id", principalDetails.getUser().getId()) // 내가 넣고 싶은 key:value
 				.withClaim("username", principalDetails.getUser().getUsername())

@@ -1,5 +1,8 @@
 package com.cos.oauth2jwt.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,6 +21,9 @@ public class CorsConfig {
 		config.addAllowedHeader("*");	// 모든 header에 응답을 허용하겠다.
 		config.addAllowedMethod("*");	// 모든 post, get, put, delete, patch 요청을 하겠다.
 		
+		List<String> exposeHeaders = new ArrayList<>();
+		exposeHeaders.add("Authorization");
+		config.setExposedHeaders(exposeHeaders);
 		source.registerCorsConfiguration("/**", config);
 		
 		return new CorsFilter(source);
