@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { Card, Modal, Upload } from "antd";
 import styled, { createGlobalStyle } from "styled-components";
 
 export const Global = createGlobalStyle`
@@ -184,9 +184,13 @@ export const ProfileCard = styled(Card)`
   background-color: #fafafa;
   border-bottom: 1px solid rgba(0, 0, 0, 0.09);
   margin-bottom: 20px;
+  input[type="file"] {
+    display: none;
+  }
   .ant-card-body {
     padding: 0;
     display: flex;
+    height: 200px;
     .profile-image {
       flex: 4;
       display: flex;
@@ -195,16 +199,17 @@ export const ProfileCard = styled(Card)`
       div {
         width: 80%;
         height: 80%;
+        max-width: 150px;
+        max-height: 150px;
         text-align: center;
         border-radius: 50%;
         position: relative;
         img {
           width: 100%;
           height: 100%;
-          min-width: 100px;
-          max-width: 200px;
           border-radius: 50%;
           object-fit: cover;
+          cursor: pointer;
         }
       }
     }
@@ -212,7 +217,7 @@ export const ProfileCard = styled(Card)`
       flex: 7;
       display: flex;
       align-items: center;
-      justify-content: center;
+      padding-left: 20px;
       > div {
         display: inline-block;
         .profile-info-username-group {
@@ -244,9 +249,42 @@ export const ProfileCard = styled(Card)`
           }
         }
         .profile-info-name-group {
-          font-size: 20px;
-          margin-bottom: 20px;
+          font-size: 18px;
+          margin-bottom: 10px;
         }
+      }
+    }
+  }
+`;
+
+// button style modal
+export const ButtonModal = styled(Modal)`
+  .ant-modal-content {
+    border-radius: 10px;
+  }
+  .ant-modal-body {
+    padding: 5px 0;
+    .modal-header {
+      text-align: center;
+      line-height: 60px;
+      margin-bottom: 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    button {
+      width: 100%;
+      height: 50px;
+      :not(:last-child) {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      :hover {
+        background-color: #fff;
+        color: #1890ff;
+      }
+    }
+    button.red {
+      color: #ff4d4f;
+      :hover {
+        opacity: 0.7;
       }
     }
   }

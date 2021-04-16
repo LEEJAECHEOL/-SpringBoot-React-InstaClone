@@ -40,7 +40,7 @@ public class JwtCreateController {
 					.password(encPassword)
 					.email(googleInfo.getEmail())
 					.name(googleInfo.getName())
-					.imageUrl(googleInfo.getImageUrl())
+					.profileImageUrl(googleInfo.getImageUrl())
 					.role("USER")
 					.build();
 			

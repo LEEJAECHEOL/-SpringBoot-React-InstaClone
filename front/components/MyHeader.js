@@ -3,8 +3,10 @@ import { CompassOutlined, HomeOutlined, UserOutlined } from "@ant-design/icons";
 import { Col, Menu, Row } from "antd";
 import { Header } from "antd/lib/layout/layout";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const MyHeader = () => {
+  const { principal } = useSelector((state) => state.user);
   return (
     <>
       <Header>
@@ -34,7 +36,7 @@ const MyHeader = () => {
                 </Link>
               </Menu.Item>
               <Menu.Item key={4}>
-                <Link href="/profile">
+                <Link href={`/profile/${principal && principal.id}`}>
                   <a>
                     <UserOutlined />
                   </a>

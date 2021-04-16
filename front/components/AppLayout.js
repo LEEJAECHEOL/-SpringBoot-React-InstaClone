@@ -1,10 +1,18 @@
 import { Col, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import React from "react";
+import React, { useEffect } from "react";
 import MyHeader from "./MyHeader";
 import { Global } from "./style";
+import { load } from "../actions/user";
+import { useDispatch } from "react-redux";
 
 const AppLayout = ({ children }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(load());
+  }, []);
+
   return (
     <>
       <Global />
