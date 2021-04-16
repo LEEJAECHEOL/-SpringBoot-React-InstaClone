@@ -82,7 +82,11 @@ const ProfileInfo = () => {
           <div>
             <div className="profile-info-username-group">
               <span>{principal && principal.username}</span>
-              <Button>사진등록</Button>
+              <Button>
+                <Link href="/write">
+                  <a>사진등록</a>
+                </Link>
+              </Button>
               <SettingOutlined onClick={showSettingModal} />
             </div>
             <div className="profile-info-follow-group">

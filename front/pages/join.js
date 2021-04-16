@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
-import { JoinCard, LoginCard, LoginForm, LoginLayout } from "../style";
+import { JoinCard, FormCard, LoginForm, LoginLayout } from "../style";
 import { useDispatch, useSelector } from "react-redux";
 import { join } from "../actions/user";
 
@@ -16,7 +16,7 @@ const Join = () => {
   return (
     <>
       <LoginLayout>
-        <LoginCard>
+        <FormCard>
           <img alt="logo" src="/images/logo.jpg" />
           <h3 style={{ color: "#8E8E8B" }}>
             친구들의 사진과 동영상을 보려면 가입하세요.
@@ -60,7 +60,7 @@ const Join = () => {
               </Button>
             </Form.Item>
           </LoginForm>
-        </LoginCard>
+        </FormCard>
         <JoinCard>
           계정이 있으신가요?
           <Link href="/login">

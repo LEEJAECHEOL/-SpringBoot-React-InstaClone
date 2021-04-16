@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   DivOr,
   JoinCard,
-  LoginCard,
+  FormCard,
   LoginForm,
   LoginLayout,
   SocialLogin,
@@ -29,7 +29,7 @@ const Login = () => {
   return (
     <>
       <LoginLayout>
-        <LoginCard>
+        <FormCard>
           <img alt="logo" src="/images/logo.jpg" />
           <LoginForm onFinish={onFinish}>
             <Form.Item
@@ -64,7 +64,7 @@ const Login = () => {
               Google Login
             </Button>
           </SocialLogin>
-        </LoginCard>
+        </FormCard>
         <JoinCard>
           계정이 없으신가요?
           <Link href="/join">

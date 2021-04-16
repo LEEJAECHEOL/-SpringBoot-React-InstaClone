@@ -1,4 +1,4 @@
-import { Card, Col, Form, Layout } from "antd";
+import { Card, Col, Form, Layout, Upload } from "antd";
 import styled from "styled-components";
 
 export const LoginLayout = styled(Layout)`
@@ -9,7 +9,7 @@ export const LoginLayout = styled(Layout)`
   align-items: center;
   justify-content: center;
 `;
-export const LoginCard = styled(Card)`
+export const FormCard = styled(Card)`
   border-color: #dbdbdb;
   width: 400px;
   text-align: center;
@@ -20,7 +20,7 @@ export const LoginCard = styled(Card)`
     padding: 30px 50px;
   }
 `;
-export const JoinCard = styled(LoginCard)`
+export const JoinCard = styled(FormCard)`
   margin-top: 10px;
   color: #333;
   .ant-card-body {
@@ -59,15 +59,17 @@ export const DivOr = styled.div`
   margin: 15px 0;
   display: flex;
   align-items: center;
-  color: #8e8e8e;
+  color: ${(props) => (props.black ? "#333" : "#8e8e8e")};
   div:nth-child(2) {
     flex: 2;
+    font-size: ${(props) => (props.black ? "18px" : "14px")};
   }
   div:nth-child(1),
   div:nth-child(3) {
     flex: 4;
     height: 1px;
-    border-top: 1px solid #dbdbdb;
+    border-top: ${(props) => (props.black ? "2px" : "1px")} solid
+      ${(props) => (props.black ? "#000" : "#dbdbdb")};
   }
 `;
 
@@ -117,5 +119,72 @@ export const ProfileForm = styled(Form)`
   }
   .explain span {
     color: rgba(0, 0, 0, 0.3);
+  }
+`;
+
+// 글 작성 card style
+export const WriteCard = styled(Card)`
+  border-color: #dbdbdb;
+  text-align: center;
+  img {
+    width: 200px;
+  }
+  .ant-card-body {
+    padding: 30px 50px;
+  }
+`;
+
+// 글작성 이미지 업로드
+export const ImageUpload = styled(Upload)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .ant-upload-list {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  .ant-upload-list-picture {
+    .ant-upload-list-item {
+      height: inherit;
+    }
+    .ant-upload-list-item-thumbnail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 200px;
+      height: 100%;
+      max-height: 500px;
+      img {
+        display: block;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  .ant-upload-span {
+    flex-direction: column;
+    text-align: center;
+  }
+`;
+
+// 글작성 form style
+export const WriteForm = styled(Form)`
+  text-align: left;
+  .ant-form-item {
+    margin-bottom: 5px;
+    :nth-child(3) {
+      margin-bottom: 10px;
+    }
+  }
+  span.write-info {
+    position: relative;
+    color: rgba(0, 0, 0, 0.4);
+    top: -5px;
+    left: 5px;
+  }
+  button {
+    width: 100%;
   }
 `;

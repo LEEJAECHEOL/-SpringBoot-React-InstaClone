@@ -1,15 +1,19 @@
 package com.cos.oauth2jwt.domain.user;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.cos.oauth2jwt.domain.post.Post;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +44,9 @@ public class User {
 	private String provider; // 제공자 Google, Facebook, Naver
     
 	private String role; // USER, ADMIN
+	
+//	@OneToMany(mappedBy = "user")
+//	private List<Post> posts;
 	
     @CreationTimestamp
     private Timestamp createDate;
