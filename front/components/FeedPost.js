@@ -1,24 +1,8 @@
-import { HeartOutlined } from "@ant-design/icons";
+import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import React from "react";
 import { FeedCard } from "./style";
 
-// 나중에 서버 연동할 때 컴포넌트로 분리할 예정
-const feedTitle = (url, username) => {
-  return (
-    <>
-      <div className="feed-profile">
-        <img src={url} alt="profile" />
-        <svg>
-          <circle cx="20" cy="20" r="18" />
-        </svg>
-      </div>
-      <span>{username}</span>
-    </>
-  );
-};
-
-// 나중에 서버 연동할 때 컴포넌트로 분리할 예정
 const commentContent = (username, msg) => {
   return (
     <>
@@ -30,27 +14,50 @@ const commentContent = (username, msg) => {
 };
 
 // 게시물
-const FeedPost = () => {
+const FeedPost = ({ post }) => {
   const onFinish = () => {};
+
   return (
     <>
-      <FeedCard title={feedTitle("/images/profile.jpeg", "ccccc")}>
+      <FeedCard
+        title={
+          <>
+            <div className="feed-profile">
+              <img
+                src={
+                  post.user.profileImageUrl !== null
+                    ? process.env.imageUrl + post.user.profileImageUrl
+                    : "/images/noprofile.jpg"
+                }
+                alt="profile"
+              />
+              <svg>
+                <circle cx="20" cy="20" r="18" />
+              </svg>
+            </div>
+            <span>{post.user.username}</span>
+          </>
+        }
+      >
         <div className="feed-image">
-          <img src="/images/profile.jpeg" alt="mainImage" />
+          <img src={process.env.imageUrl + post.postImageUrl} alt="mainImage" />
         </div>
         <div className="feed-like">
           <span className="feed-like-btn">
-            <HeartOutlined />
+            {post.likeState ? <HeartFilled /> : <HeartOutlined />}
           </span>
           <span className="feed-like-count">
-            <b>2</b> likes
+            <b>{post.likeCount}</b> likes
           </span>
         </div>
         <div className="feed-tag">
-          <span>#tag1</span>
-          <span>#tag1</span>
+          {post.tags.map((tag) => (
+            <>
+              <span key={"tag-" + tag.id}>#{tag.name}</span>
+            </>
+          ))}
         </div>
-        <div className="feed-content">내용입니다 ㅎㅎ</div>
+        <div className="feed-content">{post.caption}</div>
         <div className="feed-comment">
           {commentContent("username", "내용입니다.")}
           {commentContent("username", "내용입니다.")}

@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { save } from "../actions/post";
+import { save, get } from "../actions/post";
 import Router from "next/router";
 
 const initialState = {
   isLoading: false,
+  lastPage: false,
+  posts: [],
 };
 
 const postSlice = createSlice({
@@ -12,6 +14,24 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // get request
+      .addCase(get.pending, (state, action) => {
+        // 다른 페이지를 갔다오면 posts를 초기화
+        if (action.meta.arg === 0) {
+          state.posts = [];
+        }
+        state.isLoading = true;
+      })
+      // get success
+      .addCase(get.fulfilled, (state, action) => {
+        state.posts = state.posts.concat(action.payload.content); // 글 목록 담기
+        state.lastPage = action.payload.last;
+        state.isLoading = false;
+      })
+      // get fail
+      .addCase(get.rejected, (state, action) => {
+        state.isLoading = false;
+      })
       // save request
       .addCase(save.pending, (state, action) => {
         state.isLoading = true;

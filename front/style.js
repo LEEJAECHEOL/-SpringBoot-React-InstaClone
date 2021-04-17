@@ -188,3 +188,9 @@ export const WriteForm = styled(Form)`
     width: 100%;
   }
 `;
+
+export const LoadingDiv = styled.div`
+  text-align: center;
+  font-size: 16px;
+  padding-bottom: 20px;
+`;
