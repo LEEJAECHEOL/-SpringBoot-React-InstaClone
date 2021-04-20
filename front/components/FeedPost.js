@@ -1,7 +1,10 @@
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import React from "react";
+import React, { useCallback } from "react";
 import { FeedCard } from "./style";
+import { commentPost } from "../actions/post";
+import { useDispatch } from "react-redux";
+import PostComment from "./PostComment";
 
 const commentContent = (username, msg) => {
   return (
@@ -15,7 +18,12 @@ const commentContent = (username, msg) => {
 
 // 게시물
 const FeedPost = ({ post }) => {
-  const onFinish = () => {};
+  const dispatch = useDispatch();
+  const onFinish = useCallback((values) => {
+    values.postId = post.id;
+    dispatch(commentPost(values));
+  }, []);
+  console.log(post.comments);
 
   return (
     <>
@@ -52,16 +60,14 @@ const FeedPost = ({ post }) => {
         </div>
         <div className="feed-tag">
           {post.tags.map((tag) => (
-            <>
-              <span key={"tag-" + tag.id}>#{tag.name}</span>
-            </>
+            <span key={"tag-" + tag.id}>#{tag.name}</span>
           ))}
         </div>
         <div className="feed-content">{post.caption}</div>
         <div className="feed-comment">
-          {commentContent("username", "내용입니다.")}
-          {commentContent("username", "내용입니다.")}
-          {commentContent("username", "내용입니다.")}
+          {post.comments.map((comment) => (
+            <PostComment key={comment.id} postId={post.id} comment={comment} />
+          ))}
         </div>
         <Form onFinish={onFinish}>
           <Form.Item name="content">

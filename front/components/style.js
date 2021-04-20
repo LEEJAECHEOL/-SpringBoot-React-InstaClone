@@ -149,7 +149,18 @@ export const FeedCard = styled(Card)`
       margin: 10px 0;
       padding: 0 20px;
       p {
+        display: flex;
+        align-items: center;
         margin-bottom: 0;
+        button {
+          width: 16px;
+          height: 16px;
+          margin-left: auto;
+          :hover {
+            background-color: #fff;
+            color: #f5222d;
+          }
+        }
       }
       .feed-comment-username {
         font-weight: 700;

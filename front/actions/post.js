@@ -1,7 +1,8 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const save = createAsyncThunk("post/save", async (data, thunkAPI) => {
+// post
+export const post = createAsyncThunk("post/save", async (data, thunkAPI) => {
   const config = {
     headers: {
       Authorization: localStorage.getItem("Authorization"),
@@ -25,3 +26,29 @@ export const get = createAsyncThunk("post/get", async (data, thunkAPI) => {
   const response = await axios.get(`/post?page=${data}`, config);
   return response.data;
 });
+
+// comment
+export const commentPost = createAsyncThunk(
+  "post/commentPost",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.post("/comment", data, config);
+    return response.data;
+  }
+);
+export const commentDelete = createAsyncThunk(
+  "post/commentDelete",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.delete(`/comment/${data.id}`, config);
+    return data;
+  }
+);

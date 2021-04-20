@@ -1,19 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { save, get } from "../actions/post";
+import _concat from "lodash/concat";
+import _find from "lodash/find";
+import _remove from "lodash/remove";
+import { post, get, commentPost, commentDelete } from "../actions/post";
 import Router from "next/router";
 
 const initialState = {
   isLoading: false,
+  isCommentPostLoading: false,
+  isCommentDeleteLoading: false,
   lastPage: false,
   posts: [],
 };
 
 const postSlice = createSlice({
   name: "post",
-  initialState,
+  initialState: initialState,
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // commentDelete request
+      .addCase(commentDelete.pending, (state, action) => {
+        state.isCommentDeleteLoading = true;
+      })
+      // commentDelete success
+      .addCase(commentDelete.fulfilled, (state, action) => {
+        state.isCommentDeleteLoading = false;
+        const post = _find(state.posts, { id: action.payload.postId });
+        _remove(post.comments, { id: action.payload.id });
+      })
+      // commentDelete fail
+      .addCase(commentDelete.rejected, (state, action) => {
+        state.isCommentDeleteLoading = false;
+      })
+      // commentPost request
+      .addCase(commentPost.pending, (state, action) => {
+        state.isCommentPostLoading = true;
+      })
+      // commentPost success
+      .addCase(commentPost.fulfilled, (state, action) => {
+        state.isCommentPostLoading = false;
+        const post = _find(state.posts, { id: action.payload.post.id });
+        post.comments.unshift(action.payload);
+      })
+      // commentPost fail
+      .addCase(commentPost.rejected, (state, action) => {
+        state.isCommentPostLoading = false;
+      })
       // get request
       .addCase(get.pending, (state, action) => {
         // 다른 페이지를 갔다오면 posts를 초기화
@@ -24,7 +57,8 @@ const postSlice = createSlice({
       })
       // get success
       .addCase(get.fulfilled, (state, action) => {
-        state.posts = state.posts.concat(action.payload.content); // 글 목록 담기
+        console.log(state.posts);
+        state.posts = _concat(state.posts, action.payload.content);
         state.lastPage = action.payload.last;
         state.isLoading = false;
       })
@@ -32,17 +66,17 @@ const postSlice = createSlice({
       .addCase(get.rejected, (state, action) => {
         state.isLoading = false;
       })
-      // save request
-      .addCase(save.pending, (state, action) => {
+      // post request
+      .addCase(post.pending, (state, action) => {
         state.isLoading = true;
       })
-      // save success -> / 로 이동
-      .addCase(save.fulfilled, (state, action) => {
+      // post success -> / 로 이동
+      .addCase(post.fulfilled, (state, action) => {
         state.isLoading = false;
         Router.push("/");
       })
-      // save fail
-      .addCase(save.rejected, (state, action) => {
+      // post fail
+      .addCase(post.rejected, (state, action) => {
         state.isLoading = false;
         alert("포스트 작성에 실패하였습니다.");
       }),
