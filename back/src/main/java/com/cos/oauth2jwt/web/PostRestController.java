@@ -1,5 +1,7 @@
 package com.cos.oauth2jwt.web;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,6 +28,15 @@ import lombok.RequiredArgsConstructor;
 public class PostRestController {
 	private final PostService postService;
 	private final LikesService likesService;
+	
+	
+	@GetMapping("/post/explore")
+	public ResponseEntity<?> explore(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		List<Post> posts = postService.인기사진(principalDetails.getUser().getId());
+		
+		return new ResponseEntity<>(posts, HttpStatus.OK);
+	}
 	
 	@GetMapping("/post")
 	public ResponseEntity<?> post(@AuthenticationPrincipal PrincipalDetails principalDetails, 

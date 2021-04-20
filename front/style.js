@@ -86,6 +86,7 @@ export const SocialLogin = styled.div`
 export const ExploreCol = styled(Col)`
   position: relative;
   img {
+    cursor: pointer;
     width: 100%;
   }
 `;

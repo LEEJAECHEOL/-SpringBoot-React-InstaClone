@@ -83,3 +83,17 @@ export const likeDelete = createAsyncThunk(
     return data;
   }
 );
+
+// explore
+export const exploreGet = createAsyncThunk(
+  "post/exploreGet",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.get("/post/explore", config);
+    return response.data;
+  }
+);

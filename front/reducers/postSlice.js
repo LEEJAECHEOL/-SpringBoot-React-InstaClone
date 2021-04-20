@@ -9,6 +9,7 @@ import {
   commentDelete,
   likePost,
   likeDelete,
+  exploreGet,
 } from "../actions/post";
 import Router from "next/router";
 
@@ -18,6 +19,7 @@ const initialState = {
   isCommentDeleteLoading: false,
   isLikePostLoading: false, // like
   isLikeDeleteLoading: false, // unlike
+  isExploreGetLoading: false,
   lastPage: false,
   posts: [],
 };
@@ -28,6 +30,21 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // exploreGet request
+      .addCase(exploreGet.pending, (state, action) => {
+        // 다른 페이지를 갔다오면 posts를 초기화
+        state.isExploreGetLoading = true;
+      })
+      // exploreGet success
+      .addCase(exploreGet.fulfilled, (state, action) => {
+        state.isExploreGetLoading = false;
+        console.log(action.payload);
+        state.posts = action.payload;
+      })
+      // exploreGet fail
+      .addCase(exploreGet.rejected, (state, action) => {
+        state.isExploreGetLoading = false;
+      })
       // likeDelete request
       .addCase(likeDelete.pending, (state, action) => {
         state.isCommentDeleteLoading = true;

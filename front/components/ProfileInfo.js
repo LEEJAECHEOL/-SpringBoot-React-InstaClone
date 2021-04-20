@@ -123,7 +123,7 @@ const ProfileInfo = () => {
       </ButtonModal>
       {/* profile select modal */}
       {principal &&
-        (id == principal.id ? (
+        (Number(id) === principal.id ? (
           <ButtonModal
             footer={false}
             centered={true}

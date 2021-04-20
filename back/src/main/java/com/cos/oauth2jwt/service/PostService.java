@@ -29,6 +29,13 @@ public class PostService {
 	@Value("${file.path}")
 	private String uploadFolder;
 	
+
+	@Transactional(readOnly = true)
+	public List<Post> 인기사진(Long principalId){
+		return postRepository.mExplore(principalId);
+	}
+	
+	@Transactional(readOnly = true)
 	public Page<Post> 포스트이미지(Long principalId, Pageable pageable){
 		
 		// 1. principalId 로 내가 팔로우하고 있는 사용자를 찾아야 됨. (한개이거나 컬렉션이거나)

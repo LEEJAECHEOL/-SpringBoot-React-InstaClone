@@ -26,7 +26,7 @@ const userSlice = createSlice({
       // changeProfileImage success
       .addCase(changeProfileImage.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.principal.profileImageUrl = action.payload;
+        state.principal.profileImageUrl = action.payload.profileImageUrl;
       })
       // changeProfileImage fail -> 로그인 화면으로
       .addCase(changeProfileImage.rejected, (state, action) => {
