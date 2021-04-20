@@ -2,13 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 import _concat from "lodash/concat";
 import _find from "lodash/find";
 import _remove from "lodash/remove";
-import { post, get, commentPost, commentDelete } from "../actions/post";
+import {
+  post,
+  get,
+  commentPost,
+  commentDelete,
+  likePost,
+  likeDelete,
+} from "../actions/post";
 import Router from "next/router";
 
 const initialState = {
   isLoading: false,
   isCommentPostLoading: false,
   isCommentDeleteLoading: false,
+  isLikePostLoading: false, // like
+  isLikeDeleteLoading: false, // unlike
   lastPage: false,
   posts: [],
 };
@@ -19,6 +28,36 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // likeDelete request
+      .addCase(likeDelete.pending, (state, action) => {
+        state.isCommentDeleteLoading = true;
+      })
+      // likeDelete success
+      .addCase(likeDelete.fulfilled, (state, action) => {
+        state.isCommentDeleteLoading = false;
+        const post = _find(state.posts, { id: action.payload.postId });
+        post.likeState = false;
+        post.likeCount = post.likeCount - 1;
+      })
+      // likeDelete fail
+      .addCase(likeDelete.rejected, (state, action) => {
+        state.isCommentDeleteLoading = false;
+      })
+      // likePost request
+      .addCase(likePost.pending, (state, action) => {
+        state.isCommentPostLoading = true;
+      })
+      // likePost success
+      .addCase(likePost.fulfilled, (state, action) => {
+        state.isCommentPostLoading = false;
+        const post = _find(state.posts, { id: action.payload.postId });
+        post.likeState = true;
+        post.likeCount = post.likeCount + 1;
+      })
+      // likePost fail
+      .addCase(likePost.rejected, (state, action) => {
+        state.isCommentPostLoading = false;
+      })
       // commentDelete request
       .addCase(commentDelete.pending, (state, action) => {
         state.isCommentDeleteLoading = true;
@@ -57,7 +96,6 @@ const postSlice = createSlice({
       })
       // get success
       .addCase(get.fulfilled, (state, action) => {
-        console.log(state.posts);
         state.posts = _concat(state.posts, action.payload.content);
         state.lastPage = action.payload.last;
         state.isLoading = false;

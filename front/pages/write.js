@@ -2,7 +2,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { save } from "../actions/post";
+import { post } from "../actions/post";
 import AppLayout from "../components/AppLayout";
 import { DivOr, ImageUpload, WriteCard, WriteForm } from "../style";
 
@@ -23,7 +23,7 @@ const write = () => {
     (values) => {
       values.file = fileList;
       values.tags = values.tags.replace(/(\s*)/g, "");
-      dispatch(save(values));
+      dispatch(post(values));
     },
     [fileList]
   );

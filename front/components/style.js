@@ -117,13 +117,32 @@ export const FeedCard = styled(Card)`
       display: flex;
       flex-direction: column;
       padding-left: 10px;
+      padding-top: 5px;
       .feed-like-btn {
-        font-size: 26px;
-        cursor: pointer;
+        .like-btn,
+        .unlike-btn {
+          :hover {
+            background-color: #fff;
+          }
+          svg {
+            font-size: 26px;
+          }
+        }
+        .like-btn {
+          :hover {
+            color: #f5222d;
+          }
+        }
+        .unlike-btn {
+          color: #ff4d4f;
+          :hover {
+            opacity: 0.8;
+          }
+        }
       }
       .feed-like-count {
         margin-top: -5px;
-        padding-left: 7px;
+        padding-left: 10px;
         color: rgba(0, 0, 0, 0.3);
       }
     }

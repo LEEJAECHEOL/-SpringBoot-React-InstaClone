@@ -52,3 +52,34 @@ export const commentDelete = createAsyncThunk(
     return data;
   }
 );
+
+// Like, unlike
+
+export const likePost = createAsyncThunk(
+  "post/likePost",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.post(
+      `/post/${data.postId}/likes`,
+      data,
+      config
+    );
+    return data;
+  }
+);
+export const likeDelete = createAsyncThunk(
+  "post/likeDelete",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.delete(`/post/${data.postId}/likes`, config);
+    return data;
+  }
+);

@@ -2,28 +2,33 @@ import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import React, { useCallback } from "react";
 import { FeedCard } from "./style";
-import { commentPost } from "../actions/post";
-import { useDispatch } from "react-redux";
+import { commentPost, likePost, likeDelete } from "../actions/post";
+import { useDispatch, useSelector } from "react-redux";
 import PostComment from "./PostComment";
-
-const commentContent = (username, msg) => {
-  return (
-    <>
-      <p>
-        <span className="feed-comment-username">{username}</span> : {msg}
-      </p>
-    </>
-  );
-};
 
 // 게시물
 const FeedPost = ({ post }) => {
   const dispatch = useDispatch();
+  const { isLikePostLoading, isLikeDeleteLoading } = useSelector(
+    (state) => state.post
+  );
   const onFinish = useCallback((values) => {
     values.postId = post.id;
     dispatch(commentPost(values));
   }, []);
-  console.log(post.comments);
+  console.log(post);
+  const likeBtn = useCallback(() => {
+    const data = {
+      postId: post.id,
+    };
+    dispatch(likePost(data));
+  });
+  const unlikeBtn = useCallback(() => {
+    const data = {
+      postId: post.id,
+    };
+    dispatch(likeDelete(data));
+  });
 
   return (
     <>
@@ -52,7 +57,23 @@ const FeedPost = ({ post }) => {
         </div>
         <div className="feed-like">
           <span className="feed-like-btn">
-            {post.likeState ? <HeartFilled /> : <HeartOutlined />}
+            {post.likeState ? (
+              <Button
+                className="unlike-btn"
+                type="text"
+                icon={<HeartFilled />}
+                disabled={isLikeDeleteLoading}
+                onClick={unlikeBtn}
+              />
+            ) : (
+              <Button
+                className="like-btn"
+                type="text"
+                icon={<HeartOutlined />}
+                disabled={isLikePostLoading}
+                onClick={likeBtn}
+              />
+            )}
           </span>
           <span className="feed-like-count">
             <b>{post.likeCount}</b> likes
