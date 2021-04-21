@@ -38,7 +38,6 @@ const postSlice = createSlice({
       // exploreGet success
       .addCase(exploreGet.fulfilled, (state, action) => {
         state.isExploreGetLoading = false;
-        console.log(action.payload);
         state.posts = action.payload;
       })
       // exploreGet fail

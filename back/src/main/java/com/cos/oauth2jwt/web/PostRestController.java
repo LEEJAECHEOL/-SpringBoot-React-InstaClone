@@ -55,7 +55,6 @@ public class PostRestController {
 
 	@PostMapping("/post/{postId}/likes")
 	public ResponseEntity<?> like(@PathVariable Long postId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-		System.out.println(principalDetails);
 		likesService.좋아요(postId, principalDetails.getUser().getId());
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}

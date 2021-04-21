@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { ProfileCard, ButtonModal } from "./style";
 import { useRouter } from "next/router";
 import { changeProfileImage } from "../actions/user";
+import userSlice from "../reducers/userSlice";
 
-const ProfileInfo = () => {
+const ProfileInfo = ({ profile }) => {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const ProfileInfo = () => {
   // setting modal
   const [isSettingModalVisible, setIsSettingModalVisible] = useState(false);
   const showSettingModal = useCallback(() => {
-    if (id === (principal && principal.id)) {
+    if (id == (principal && principal.id)) {
       setIsSettingModalVisible(true);
     } else {
       alert("사용 권한이 없습니다.");
@@ -31,8 +32,9 @@ const ProfileInfo = () => {
     setIsProfileSelectModalVisible,
   ] = useState(false);
   const showProfileSelectModal = useCallback(() => {
-    console.log(id);
-    setIsProfileSelectModalVisible(true);
+    if (id == (principal && principal.id)) {
+      setIsProfileSelectModalVisible(true);
+    }
   }, [id]);
   const handleProfileSelectCancel = useCallback(() => {
     setIsProfileSelectModalVisible(false);
@@ -54,6 +56,10 @@ const ProfileInfo = () => {
     [id]
   );
 
+  const logoutBtn = useCallback(() => {
+    dispatch(userSlice.actions.logOut());
+  }, []);
+
   return (
     <>
       <ProfileCard bordered={false}>
@@ -68,10 +74,13 @@ const ProfileInfo = () => {
           <div>
             <img
               src={
-                principal &&
-                (principal.profileImageUrl !== null
+                profile && principal && profile.user.id !== principal.id
+                  ? profile.user.profileImageUrl !== null
+                    ? process.env.imageUrl + profile.user.profileImageUrl
+                    : "/images/noprofile.jpg"
+                  : principal && principal.profileImageUrl !== null
                   ? process.env.imageUrl + principal.profileImageUrl
-                  : "/images/noprofile.jpg")
+                  : "/images/noprofile.jpg"
               }
               alt="profileImage"
               onClick={showProfileSelectModal}
@@ -81,24 +90,29 @@ const ProfileInfo = () => {
         <div className="profile-info">
           <div>
             <div className="profile-info-username-group">
-              <span>{principal && principal.username}</span>
-              <Button>
-                <Link href="/write">
-                  <a>사진등록</a>
-                </Link>
-              </Button>
-              <SettingOutlined onClick={showSettingModal} />
+              <span>{profile && profile.user.username}</span>
+              {principal && id == principal.id ? (
+                <>
+                  <Button>
+                    <Link href="/write">
+                      <a>사진등록</a>
+                    </Link>
+                  </Button>
+                  <SettingOutlined onClick={showSettingModal} />
+                </>
+              ) : null}
             </div>
             <div className="profile-info-follow-group">
               <span>
-                게시물 <b>9</b>
+                게시물 <b>{profile && profile.postCount}</b>
               </span>
               <span className="profile-info-follow">
-                구독정보 <b>9</b>
+                구독정보 <b>{profile && profile.followCount}</b>
               </span>
             </div>
             <div className="profile-info-name-group">
-              {principal && principal.name}
+              {profile && profile.user.name}
+              <p>{profile && profile.user.intro}</p>
             </div>
           </div>
         </div>
@@ -116,14 +130,16 @@ const ProfileInfo = () => {
             <a>회원정보 변경</a>
           </Link>
         </Button>
-        <Button type="text">로그아웃</Button>
+        <Button type="text" onClick={logoutBtn}>
+          로그아웃
+        </Button>
         <Button type="text" onClick={handleSettingCancel}>
           취소
         </Button>
       </ButtonModal>
       {/* profile select modal */}
       {principal &&
-        (Number(id) === principal.id ? (
+        (id == principal.id ? (
           <ButtonModal
             footer={false}
             centered={true}

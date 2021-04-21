@@ -53,3 +53,17 @@ export const changeProfileImage = createAsyncThunk(
     return response.data;
   }
 );
+
+// 프로필 가져오기
+export const profileGet = createAsyncThunk(
+  "user/profileGet",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.get(`/user/${data.id}`, config);
+    return response.data;
+  }
+);

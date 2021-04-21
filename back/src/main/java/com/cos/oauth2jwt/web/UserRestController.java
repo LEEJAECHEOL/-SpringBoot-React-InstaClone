@@ -14,6 +14,7 @@ import com.cos.oauth2jwt.domain.user.User;
 import com.cos.oauth2jwt.service.UserService;
 import com.cos.oauth2jwt.web.dto.user.LoginRespDto;
 import com.cos.oauth2jwt.web.dto.user.ProfileImageRespDto;
+import com.cos.oauth2jwt.web.dto.user.UserProfileRespDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,9 +24,16 @@ public class UserRestController {
 	
 	private final UserService userService;
 	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<?> profile(@PathVariable Long id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		UserProfileRespDto userProfileRespDto = userService.회원프로필(id, principalDetails.getUser().getId());
+		
+		return new ResponseEntity<>(userProfileRespDto, HttpStatus.OK);
+	}
+	
 	@GetMapping("/user/load")
 	public ResponseEntity<?> loadUser(@AuthenticationPrincipal PrincipalDetails principalDetails){
-		System.out.println(principalDetails);
 		if(principalDetails != null) { // 사용자가 있을 경우 사용자 정보를 리턴
 			User user = principalDetails.getUser();
 			LoginRespDto loginRespDto = LoginRespDto.builder()

@@ -1,12 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { join, login, load, changeProfileImage } from "../actions/user";
+import {
+  join,
+  login,
+  load,
+  changeProfileImage,
+  profileGet,
+} from "../actions/user";
 import Router from "next/router";
 
 const initialState = {
   isLoading: false,
+  isProfileGetLoading: false,
   loginError: null,
   joinError: null,
 
+  profile: null,
   principal: null,
 };
 const userSlice = createSlice({
@@ -15,10 +23,25 @@ const userSlice = createSlice({
   reducers: {
     logOut(state, action) {
       state.principal = null;
+      localStorage.removeItem("Authorization");
+      Router.push("/login");
     },
   },
   extraReducers: (builder) =>
     builder
+      // profileGet request
+      .addCase(profileGet.pending, (state, action) => {
+        state.isProfileGetLoading = true;
+      })
+      // profileGet success
+      .addCase(profileGet.fulfilled, (state, action) => {
+        state.isProfileGetLoading = false;
+        state.profile = action.payload;
+      })
+      // profileGet fail
+      .addCase(profileGet.rejected, (state, action) => {
+        state.isProfileGetLoading = false;
+      })
       // changeProfileImage request
       .addCase(changeProfileImage.pending, (state, action) => {
         state.isLoading = true;

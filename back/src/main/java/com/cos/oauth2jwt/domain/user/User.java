@@ -45,8 +45,8 @@ public class User {
     
 	private String role; // USER, ADMIN
 	
-//	@OneToMany(mappedBy = "user")
-//	private List<Post> posts;
+	@OneToMany(mappedBy = "user")
+	private List<Post> posts;
 	
     @CreationTimestamp
     private Timestamp createDate;

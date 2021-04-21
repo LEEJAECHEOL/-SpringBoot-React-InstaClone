@@ -16,7 +16,6 @@ const FeedPost = ({ post }) => {
     values.postId = post.id;
     dispatch(commentPost(values));
   }, []);
-  console.log(post);
   const likeBtn = useCallback(() => {
     const data = {
       postId: post.id,
