@@ -20,7 +20,7 @@ const PostComment = ({ postId, comment }) => {
     <p>
       <span className="feed-comment-username">{comment.user.username}</span> :{" "}
       {comment.content}
-      {principal.id === comment.user.id ? (
+      {principal && principal.id === comment.user.id ? (
         <Button type="text" icon={<DeleteOutlined />} onClick={deleteComment} />
       ) : null}
     </p>
