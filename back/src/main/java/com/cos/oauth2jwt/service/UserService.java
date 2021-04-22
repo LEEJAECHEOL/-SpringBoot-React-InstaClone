@@ -1,6 +1,7 @@
 package com.cos.oauth2jwt.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final FollowRepository followRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Value("${file.path}")
 	private String uploadFolder;
@@ -59,5 +61,23 @@ public class UserService {
 		userProfileRespDto.getUser().setPassword("");
 		return userProfileRespDto;
 	}
+	
+	@Transactional
+	public User 회원수정(Long id, User user) {
+		// username, email 수정 불가
+		User userEntity = userRepository.findById(id).get();
+		userEntity.setName(user.getName());
+		userEntity.setIntro(user.getIntro());
+		userEntity.setEmail(user.getEmail());
+		userEntity.setPhone(user.getPhone());
+		userEntity.setWebsite(user.getWebsite());
+		userEntity.setGender(user.getGender());
+		
+		String rawPassword = user.getPassword();
+		String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+		userEntity.setPassword(encPassword);
+		return userEntity;
+	} // 더티체킹
+	
 
 }

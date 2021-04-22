@@ -106,3 +106,17 @@ export const followListGet = createAsyncThunk(
     return response.data;
   }
 );
+
+// 프로필 수정하기
+export const profilePut = createAsyncThunk(
+  "user/profilePut",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.put(`/user/${data.id}`, data, config);
+    return data.id;
+  }
+);

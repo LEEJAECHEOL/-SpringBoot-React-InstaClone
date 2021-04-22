@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,6 +70,16 @@ public class UserRestController {
 		ProfileImageRespDto respDto = new ProfileImageRespDto();
 		respDto.setProfileImageUrl(userEntity.getProfileImageUrl());
 		return new ResponseEntity<>(respDto, HttpStatus.OK);
+	}
+	
+
+	@PutMapping("/user/{id}")
+	public ResponseEntity<?> profileImageUrlUpdate(@PathVariable Long id,@RequestBody User user, @AuthenticationPrincipal PrincipalDetails principalDetails){
+		// id값이랑 principal id 비교(다르면 익셉션), 나중에 처리
+		
+		User userEntity = userService.회원수정(id, user);
+		principalDetails.setUser(userEntity);
+		return new ResponseEntity<>(HttpStatus.OK); // 프로필페이지로 이동 200만 리턴
 	}
 	
 }

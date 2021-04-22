@@ -8,6 +8,7 @@ import {
   followPost,
   followDelete,
   followListGet,
+  profilePut,
 } from "../actions/user";
 import _find from "lodash/find";
 import Router from "next/router";
@@ -37,6 +38,19 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) =>
     builder
+      // profilePut request
+      .addCase(profilePut.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      // profilePut success
+      .addCase(profilePut.fulfilled, (state, action) => {
+        state.isLoading = false;
+        Router.push(`/profile/${action.payload}`);
+      })
+      // profilePut fail
+      .addCase(profilePut.rejected, (state, action) => {
+        state.isLoading = false;
+      })
       // followListGet request
       .addCase(followListGet.pending, (state, action) => {
         state.isFollowListGetLoading = true;
