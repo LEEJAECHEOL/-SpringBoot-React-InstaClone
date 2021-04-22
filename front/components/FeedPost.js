@@ -5,16 +5,19 @@ import { FeedCard } from "./style";
 import { commentPost, likePost, likeDelete } from "../actions/post";
 import { useDispatch, useSelector } from "react-redux";
 import PostComment from "./PostComment";
+import { useForm } from "antd/lib/form/Form";
 
 // 게시물
 const FeedPost = ({ post }) => {
   const dispatch = useDispatch();
+  const [form] = useForm();
   const { isLikePostLoading, isLikeDeleteLoading } = useSelector(
     (state) => state.post
   );
   const onFinish = useCallback((values) => {
     values.postId = post.id;
     dispatch(commentPost(values));
+    form.setFieldsValue({ content: "" });
   }, []);
   const likeBtn = useCallback(() => {
     const data = {
@@ -89,7 +92,7 @@ const FeedPost = ({ post }) => {
             <PostComment key={comment.id} postId={post.id} comment={comment} />
           ))}
         </div>
-        <Form onFinish={onFinish}>
+        <Form onFinish={onFinish} form={form}>
           <Form.Item name="content">
             <Input placeholder="댓글 달기..." />
           </Form.Item>

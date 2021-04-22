@@ -1,18 +1,32 @@
 import { SettingOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 import Link from "next/link";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProfileCard, ButtonModal } from "./style";
 import { useRouter } from "next/router";
-import { changeProfileImage } from "../actions/user";
+import {
+  changeProfileImage,
+  followPost,
+  followDelete,
+  followListGet,
+} from "../actions/user";
 import userSlice from "../reducers/userSlice";
+import FollowList from "./FollowList";
 
 const ProfileInfo = ({ profile }) => {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
-  const principal = useSelector((state) => state.user.principal);
+  const {
+    principal,
+    isFollowPostLoading,
+    isFollowDeleteLoading,
+    followList,
+  } = useSelector((state) => state.user);
+
+  console.log(followList);
+
   // setting modal
   const [isSettingModalVisible, setIsSettingModalVisible] = useState(false);
   const showSettingModal = useCallback(() => {
@@ -21,7 +35,7 @@ const ProfileInfo = ({ profile }) => {
     } else {
       alert("사용 권한이 없습니다.");
     }
-  }, []);
+  }, [id]);
   const handleSettingCancel = useCallback(() => {
     setIsSettingModalVisible(false);
   }, []);
@@ -60,6 +74,40 @@ const ProfileInfo = ({ profile }) => {
     dispatch(userSlice.actions.logOut());
   }, []);
 
+  // follow 버튼
+  const followBtn = useCallback(() => {
+    const data = {
+      id: id, // follow할 아이디
+      profileId: null, // 현재 프로필 id (null : 다른 프로필에서 팔로우 리스트에서 아닌 구독 하기누를때)
+    };
+    dispatch(followPost(data));
+  }, [id]);
+
+  // unfollow 버튼
+  const unfollowBtn = useCallback(() => {
+    const data = {
+      id: id, // follow할 아이디
+      profileId: null, // 현재 프로필 id (null : 다른 프로필에서 팔로우 리스트에서 아닌 구독 취소누를때)
+    };
+    dispatch(followDelete(data));
+  }, [id]);
+
+  // follow List
+  const [isFollowListModalVisible, setIsFollowListModalVisible] = useState(
+    false
+  );
+  // FollowList 모달창 뛰우기
+  const followListBtn = useCallback(() => {
+    const data = {
+      id: id,
+    };
+    dispatch(followListGet(data));
+    setIsFollowListModalVisible(true);
+  }, [id]);
+
+  const handleFollowListCancel = useCallback(() => {
+    setIsFollowListModalVisible(false);
+  }, []);
   return (
     <>
       <ProfileCard bordered={false}>
@@ -100,13 +148,32 @@ const ProfileInfo = ({ profile }) => {
                   </Button>
                   <SettingOutlined onClick={showSettingModal} />
                 </>
-              ) : null}
+              ) : (
+                <>
+                  {profile && profile.followState ? (
+                    <Button
+                      onClick={unfollowBtn}
+                      loading={isFollowDeleteLoading}
+                    >
+                      구독취소
+                    </Button>
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={followBtn}
+                      loading={isFollowPostLoading}
+                    >
+                      구독하기
+                    </Button>
+                  )}
+                </>
+              )}
             </div>
             <div className="profile-info-follow-group">
               <span>
                 게시물 <b>{profile && profile.postCount}</b>
               </span>
-              <span className="profile-info-follow">
+              <span className="profile-info-follow" onClick={followListBtn}>
                 구독정보 <b>{profile && profile.followCount}</b>
               </span>
             </div>
@@ -117,6 +184,26 @@ const ProfileInfo = ({ profile }) => {
           </div>
         </div>
       </ProfileCard>
+      {/* follow List modal */}
+      <Modal
+        title="구독 정보"
+        footer={false}
+        visible={isFollowListModalVisible}
+        onCancel={handleFollowListCancel}
+      >
+        {followList.length !== 0 ? (
+          followList.map((follow, index) => (
+            <FollowList
+              key={index}
+              follow={follow}
+              profileId={profile.user.id}
+            />
+          ))
+        ) : (
+          <p>구독 리스트가 비었습니다.</p>
+        )}
+      </Modal>
+
       {/* setting modal */}
       <ButtonModal
         footer={false}
@@ -137,6 +224,7 @@ const ProfileInfo = ({ profile }) => {
           취소
         </Button>
       </ButtonModal>
+
       {/* profile select modal */}
       {principal &&
         (id == principal.id ? (

@@ -23,7 +23,6 @@ export const load = createAsyncThunk("user/load", async (data, thunkAPI) => {
     },
   };
   const response = await axios.get("/user/load", config);
-  console.log(response.data);
   return response.data;
 });
 
@@ -64,6 +63,46 @@ export const profileGet = createAsyncThunk(
       },
     };
     const response = await axios.get(`/user/${data.id}`, config);
+    return response.data;
+  }
+);
+
+// follow
+
+export const followPost = createAsyncThunk(
+  "user/followPost",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.post(`/follow/${data.id}`, data, config);
+    return data;
+  }
+);
+export const followDelete = createAsyncThunk(
+  "user/followDelete",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.delete(`/follow/${data.id}`, config);
+    return data;
+  }
+);
+
+export const followListGet = createAsyncThunk(
+  "user/followListGet",
+  async (data, thunkAPI) => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    };
+    const response = await axios.get(`/user/${data.id}/follow`, config);
     return response.data;
   }
 );

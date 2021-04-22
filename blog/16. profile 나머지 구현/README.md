@@ -1,4 +1,4 @@
-# 15. profile 나머지 구현
+# 16. profile 나머지 구현
 
 1.  이전 : principal 데이터 뿌림
     변경 : profile 진입 시 해당 프로필 정보 가져와서 뿌리기

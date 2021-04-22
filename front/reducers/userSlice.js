@@ -5,17 +5,25 @@ import {
   load,
   changeProfileImage,
   profileGet,
+  followPost,
+  followDelete,
+  followListGet,
 } from "../actions/user";
+import _find from "lodash/find";
 import Router from "next/router";
 
 const initialState = {
   isLoading: false,
   isProfileGetLoading: false,
+  isFollowPostLoading: false, // follow
+  isFollowDeleteLoading: false, //unfollow
+  isFollowListGetLoading: false, // follow list 가져오기
   loginError: null,
   joinError: null,
 
   profile: null,
   principal: null,
+  followList: [],
 };
 const userSlice = createSlice({
   name: "user",
@@ -29,6 +37,62 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) =>
     builder
+      // followListGet request
+      .addCase(followListGet.pending, (state, action) => {
+        state.isFollowListGetLoading = true;
+      })
+      // followListGet success
+      .addCase(followListGet.fulfilled, (state, action) => {
+        state.isFollowListGetLoading = false;
+        state.followList = action.payload;
+      })
+      // followListGet fail
+      .addCase(followListGet.rejected, (state, action) => {
+        state.isFollowListGetLoading = false;
+      })
+      // followDelete request
+      .addCase(followDelete.pending, (state, action) => {
+        state.isFollowDeleteLoading = true;
+      })
+      // followDelete success
+      .addCase(followDelete.fulfilled, (state, action) => {
+        state.isFollowDeleteLoading = false;
+        state.profile.followState = false;
+        // 팔로우 리스트에서 구독 취소할 떄
+        if (action.payload.profileId !== null) {
+          const list = _find(state.followList, { userId: action.payload.id });
+          list.followState = 0;
+          if (action.payload.profileId === state.profile.user.id) {
+            console.log("is run?");
+            state.profile.followCount = state.profile.followCount - 1;
+          }
+        }
+      })
+      // followDelete fail
+      .addCase(followDelete.rejected, (state, action) => {
+        state.isFollowDeleteLoading = false;
+      })
+      // followPost request
+      .addCase(followPost.pending, (state, action) => {
+        state.isFollowPostLoading = true;
+      })
+      // followPost success
+      .addCase(followPost.fulfilled, (state, action) => {
+        state.isFollowPostLoading = false;
+        state.profile.followState = true;
+        // 팔로우 리스트에서 구독 할 때
+        if (action.payload.profileId !== null) {
+          const list = _find(state.followList, { userId: action.payload.id });
+          list.followState = 1;
+          if (action.payload.profileId === state.profile.user.id) {
+            state.profile.followCount = state.profile.followCount + 1;
+          }
+        }
+      })
+      // followPost fail
+      .addCase(followPost.rejected, (state, action) => {
+        state.isFollowPostLoading = false;
+      })
       // profileGet request
       .addCase(profileGet.pending, (state, action) => {
         state.isProfileGetLoading = true;

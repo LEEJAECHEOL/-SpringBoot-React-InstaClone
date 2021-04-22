@@ -1,5 +1,7 @@
 package com.cos.oauth2jwt.web;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,7 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cos.oauth2jwt.config.auth.PrincipalDetails;
 import com.cos.oauth2jwt.domain.user.User;
+import com.cos.oauth2jwt.service.FollowService;
 import com.cos.oauth2jwt.service.UserService;
+import com.cos.oauth2jwt.web.dto.follow.FollowRespDto;
 import com.cos.oauth2jwt.web.dto.user.LoginRespDto;
 import com.cos.oauth2jwt.web.dto.user.ProfileImageRespDto;
 import com.cos.oauth2jwt.web.dto.user.UserProfileRespDto;
@@ -23,6 +27,13 @@ import lombok.RequiredArgsConstructor;
 public class UserRestController {
 	
 	private final UserService userService;
+	private final FollowService followService;
+	
+	@GetMapping("/user/{pageUserId}/follow") // data 리턴하는 것
+	public ResponseEntity<?> followList(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long pageUserId){
+		List<FollowRespDto> followRespDto = followService.팔로우리스트(principalDetails.getUser().getId(), pageUserId);
+		return new ResponseEntity<>(followRespDto, HttpStatus.OK);
+	}
 	
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> profile(@PathVariable Long id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
